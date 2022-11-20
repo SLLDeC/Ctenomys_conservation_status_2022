@@ -1,0 +1,98 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['sankey']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'From');
+        data.addColumn('string', 'To');
+        data.addColumn('number', 'Weight');
+        data.addRows([
+[ 'NE', 'Least Concern', 0 ],
+[ 'NE', 'Near Threatened', 1 ],
+[ 'NE', 'Vulnerable', 4 ],
+[ 'NE', 'Endangered', 1 ],
+[ 'NE', 'Critically Endangered', 4 ],
+[ 'DD', 'Least Concern', 1 ],
+[ 'DD', 'Near Threatened', 3 ],
+[ 'DD', 'Vulnerable', 2 ],
+[ 'DD', 'Endangered', 12 ],
+[ 'DD', 'Critically Endangered', 4 ],
+[ 'LC', 'Least Concern', 8 ],
+[ 'LC', 'Near Threatened', 0 ],
+[ 'LC', 'Vulnerable', 3 ],
+[ 'LC', 'Endangered', 1 ],
+[ 'LC', 'Critically Endangered', 0 ],
+[ 'NT', 'Least Concern', 1 ],
+[ 'NT', 'Near Threatened', 0 ],
+[ 'NT', 'Vulnerable', 0 ],
+[ 'NT', 'Endangered', 0 ],
+[ 'NT', 'Critically Endangered', 0 ],
+[ 'NT or higher', 'Least Concern', 0 ],
+[ 'NT or higher', 'Near Threatened', 0 ],
+[ 'NT or higher', 'Vulnerable', 1 ],
+[ 'NT or higher', 'Endangered', 0 ],
+[ 'NT or higher', 'Critically Endangered', 0 ],
+[ 'NT or higher', 'Least Concern', 1 ],
+[ 'NT or higher', 'Near Threatened', 0 ],
+[ 'NT or higher', 'Vulnerable', 0 ],
+[ 'NT or higher', 'Endangered', 0 ],
+[ 'NT or higher', 'Critically Endangered', 0 ],
+[ 'VU', 'Least Concern', 0 ],
+[ 'VU', 'Near Threatened', 0 ],
+[ 'VU', 'Vulnerable', 2 ],
+[ 'VU', 'Endangered', 5 ],
+[ 'VU', 'Critically Endangered', 1 ],
+[ 'EN', 'Least Concern', 0 ],
+[ 'EN', 'Near Threatened', 0 ],
+[ 'EN', 'Vulnerable', 1 ],
+[ 'EN', 'Endangered', 10 ],
+[ 'EN', 'Critically Endangered', 0 ],
+[ 'CR', 'Least Concern', 0 ],
+[ 'CR', 'Near Threatened', 0 ],
+[ 'CR', 'Vulnerable', 0 ],
+[ 'CR', 'Endangered', 1 ],
+[ 'CR', 'Critically Endangered', 1 ]
+        ]);
+
+        // Sets chart options.
+      var options = {
+        width: 600,     };
+
+
+    var colors = ['#a6cee3', '#b2df8a', '#fb9a99', '#fdbf6f',
+                  '#cab2d6', '#ffff99', '#1f78b4', '#33a02c', '#ff0000', '#e100ff'];
+
+	    var options = {
+      height: 600,
+	  width: 600,
+      sankey: {
+        node: { label: { fontName: 'Arial',
+                         fontSize: 13,
+                         color: '#000000',
+                         bold: true,
+                         italic: false },
+				colors: colors
+        },
+        link: {
+          colorMode: 'gradient',
+          colors: colors},
+		  iterations:0
+   }}
+
+	        // Instantiates and draws our chart, passing in some options.
+        var chart = new google.visualization.Sankey(document.getElementById('sankey_basic'));
+        chart.draw(data, options);
+		      }
+	  
+    </script>
+  </head>
+  <body>
+    <div id="sankey_basic" style="width: 900px; height: 300px;"></div>
+  </body>
+</html>
+    <div id="sankey_basic" style="width: 900px; height: 300px;"></div>
+  </body>
+</html>

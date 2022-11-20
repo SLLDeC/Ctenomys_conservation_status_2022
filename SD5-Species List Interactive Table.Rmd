@@ -1,0 +1,76 @@
+---
+title: "Supplementary Data SD5"
+output: html_document
+---
+
+<style>
+.main-container {
+    max-width: 2040px;
+    margin-left: 10px;
+    margin-right: auto;
+}
+
+</style>
+
+<!-- https://stackoverflow.com/questions/57175174/how-to-remove-padding-on-left-side-of-r-markdown-generated-html-file -->
+
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(warning = FALSE)
+library(tidyverse)
+library(DT)
+```
+
+```{r Data, include=FALSE}
+species_list <- read_csv("data/full_species_list.csv") %>%
+  rename(Countries= Countries...2,
+         `Countries (PAs)` = Countries...16) %>% 
+  mutate(`Distribution Area (km2)` =  format(`Distribution Area (km2)`, big.mark=","),
+         `PA (km2)` =  format(`PA (km2)`, big.mark=","))
+
+
+species_list_without_pa_names <- species_list %>% 
+  mutate(Species = paste0('<em>',Species,'</em>'),
+         `Conservation status (CS)` = as.factor(`Conservation status (CS)`),
+         `Level of Threat` = as.factor(`Level of Threat`),
+         `Population trend` = as.factor(`Population trend`),
+         `Status revision` = as.factor(`Status revision`)) %>% 
+  relocate(`Source (CS)`, .after = `Conservation status (CS)`) %>% 
+  relocate(`Status revision`, .before = `Level of Threat`) %>% 
+  select(-c(`PA names`,`Countries (PAs)`))
+
+species_list_without_pa_names[species_list_without_pa_names == '<em>Iberá</em>'] <- 'Iberá'
+
+```
+
+```{r Tabla, echo=FALSE}
+x = datatable(species_list_without_pa_names,
+              escape=FALSE,
+              rownames = FALSE,
+              colnames = c('PA (Km<sup>2</sup>)' = 'PA (km2)',
+                       'Natural cover 2020 (%)' = '% Natural cover 2020',
+                       'Distribution Area (Km<sup>2</sup>)' = 'Distribution Area (km2)',
+                       'Net Natural-seminatural change (Km<sup>2</sup>)' = 'Net Natural-seminatural change (Km2)'),
+              extensions = 'FixedColumns',
+          options = list(
+            fixedColumns = list(leftColumns = 1)),
+          filter = 'top') %>% 
+  formatRound('Natural-seminatural cover 2000', 0) %>% 
+  formatRound('Anthropic cover 2000', 0) %>% 
+  formatRound('Natural-seminatural cover 2020', 0) %>% 
+  formatRound('Anthropic cover 2020', 0) %>% 
+  formatRound('Net Natural-seminatural change (Km<sup>2</sup>)', 0) %>% 
+  formatRound('Natural cover 2020 (%)', 0) %>% 
+  formatRound('Rate Natural-seminatural change (%)', 2)
+
+```
+
+## "Filling the gap in distribution ranges and conservation status in *Ctenomys* (Rodentia: Ctenomyidae)."
+### *Caraballo, D. A., López, S. L., Botero-Cañola, S., and Gardner S. L.*
+
+#### **Supplementary Data SD5**. Interactive table showing distribution areas, conservation status, overlap with protected areas, and habitat transformation in the past 20 years for 68 extant _Ctenomys_ species.
+
+<br>
+```{r, echo=FALSE}
+x
+```
+

@@ -1,0 +1,175 @@
+---
+title: "Supplementary Data SD1"
+output: html_document
+---
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+library(leaflet)
+library(sf)
+library(tidyverse)
+
+```
+
+```{r loading data , message=FALSE, warning=FALSE, include=FALSE, echo=FALSE}
+all_layers <- sf::st_read("data/all_layers_simplified_interactive_map.shp")
+# simplified in mapshaper (https://mapshaper.org) at 10%
+
+# Fixing Iberá
+all_layers[68,1] <- 'Iberá'
+```
+
+```{r}
+title_var <- "Supplementary Data SD1"
+# https://stackoverflow.com/questions/58188845/rmarkdown-tab-name-in-browser
+```    
+
+---
+title: `r title_var`
+---
+
+<style>
+  .title{
+    display: none;
+  }
+</style>
+
+```{r inicializo_mapa, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+interactive_map <- leaflet() %>%
+  # addControl(title, position = "topleft", className="map-title") %>% 
+  addProviderTiles("Esri.WorldGrayCanvas", options = tileOptions(minZoom=3, maxZoom=7)) %>% 
+  addMapPane("int", zIndex = 450) %>%
+  addMapPane("ar", zIndex = 410) %>%
+  addMapPane("ctenomys", zIndex = 400) %>%
+  addMapPane("ctenomys_lista", zIndex = 420) 
+```
+
+```{r ctenomys, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+
+ctenomys <- all_layers %>% 
+  filter(capa == 'DA') %>% 
+  mutate(BINOMIA = paste0('<i>',BINOMIA,'</i>')) 
+
+ctenomys[68,1] <- 'Iberá'
+
+ctenomys.lista <- split(ctenomys, ctenomys$BINOMIA)
+
+names(ctenomys.lista) %>%
+  purrr::walk( function(df) {
+    interactive_map <<- interactive_map %>%
+      addPolygons(color = '#1034A6',
+                  data = ctenomys.lista[[df]],
+                  options = pathOptions(pane = "ctenomys_lista"),
+                  weight = 1,
+                  smoothFactor = 0.5,
+                  opacity = 0.8,
+                  fillOpacity = 0.2,
+                  fillColor = '#1034A6',
+                  group = ctenomys.lista[[df]]$BINOMIA,
+                  popup = paste0(ctenomys.lista[[df]]$BINOMIA,' - DA: ', ctenomys.lista[[df]]$ar_sn_g," km<sup>2</sup>"),
+                  highlightOptions = highlightOptions(color = '#1034A6',
+                                                      weight = 2,
+                                                      bringToFront = TRUE))})
+```
+
+
+```{r ctenomys_todos, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+
+interactive_map <- interactive_map %>% 
+  addPolygons(color = '#1034A6',
+              data = ctenomys,
+              options = pathOptions(pane = "ctenomys"),
+              weight = 1,
+              smoothFactor = 0.5,
+              opacity = 0.8,
+              fillOpacity = 0.1,
+              fillColor = '#1034A6',
+              popup = paste0(ctenomys$BINOMIA),
+              group = paste0('<i> Ctenomys</i> Distribution areas'),
+              highlightOptions = highlightOptions(color = '#1034A6',
+                                                  weight = 2,
+                                                  bringToFront = TRUE))
+```
+
+```{r PAs, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+areas <- all_layers %>% 
+  filter(capa == 'PA')
+
+interactive_map <- interactive_map %>% 
+    addPolygons(color = '#eec900', #gold2
+              data = areas,
+              options = pathOptions(pane = "ar"),
+              weight = 1,
+              smoothFactor = 0.5,
+              opacity = 0.8,
+              fillOpacity = 0.1,
+              fillColor = '#eec900',
+              popup = areas$orig_name,
+              group = 'Protected areas',
+              highlightOptions = highlightOptions(color = '#eec900',
+                                    weight = 2,
+                                                  bringToFront = TRUE))
+```
+
+```{r Intersections, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+
+intersections <- all_layers %>% 
+  filter(capa == 'I') %>% 
+  mutate(BINOMIA = paste0('<i>',BINOMIA,'</i>'))
+
+intersections[42,1] <- 'Iberá'
+
+interactive_map <- interactive_map %>% 
+  addPolygons(color = '#d26da3', #purple#551a8b
+              data = intersections,
+              options = pathOptions(pane = "int"),
+              weight = 1,
+              smoothFactor = 0.5,
+              opacity = 0.8,
+              fillOpacity = 0.5,
+              fillColor = '#d26da3',
+              popup = paste0(intersections$BINOMIA," - PA"),
+              group = 'Intersections',
+              highlightOptions = highlightOptions(color = '#d26da3',
+                                                  weight = 2,
+                                                  bringToFront = TRUE))
+
+```
+
+
+```{r legend, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+
+interactive_map <- interactive_map %>%
+  addLegend("bottomleft",
+            colors=c('#1034A6', '#eec900','#d26da3'),
+            values = c('Distribution areas', 'Protected areas', 'Intersections'),
+            labels= c('Distribution areas', 'Protected areas', 'Intersections'),
+            # title = "Polygons",
+            opacity = 1)
+
+```
+
+```{r Selector, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+interactive_map <- interactive_map %>%
+    addLayersControl(overlayGroups = c('Protected areas', 'Intersections',paste0('<i> Ctenomys</i> Distribution areas'),names(ctenomys.lista)),
+                   options = layersControlOptions(collapsed = T)
+                   ) %>% 
+  hideGroup(c('Protected areas','Intersections',paste0('<i> Ctenomys</i> Distribution areas'),names(ctenomys.lista)))
+```
+
+## "Filling the gap in distribution ranges and conservation status in *Ctenomys* (Rodentia: Ctenomyidae)."
+### *Caraballo, D. A., López, S. L., Botero-Cañola, S., and Gardner S. L.*
+
+#### **Supplementary Data SD1**. Interactive map showing _Ctenomys_ geographic distribution areas (DAs), protected areas (PAs), and their intersection.
+
+The icon located at the upper right corner is an dropdown menu that allows to select/deselect layers of interest. By selecting a species layer, the name of the species and its total area of distribution are displayed after clicking. By clicking on a PA,  the name is shown, according to the World Database of Protected Areas. By clicking on an intersection shape, the name of the species is shown.
+
+
+
+```{r}
+interactive_map
+```

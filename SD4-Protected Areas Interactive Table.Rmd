@@ -1,0 +1,56 @@
+---
+title: "Supplementary Data SD4"
+output: html_document
+---
+
+<style>
+.main-container {
+    max-width: 2040px;
+    margin-left: 10px;
+    margin-right: auto;
+}
+</style>
+
+<!-- https://stackoverflow.com/questions/57175174/how-to-remove-padding-on-left-side-of-r-markdown-generated-html-file -->
+
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(warning = FALSE)
+library(tidyverse)
+library(DT)
+```
+
+```{r Data, include=FALSE}
+species_list <- read_csv("data/full_species_list.csv") %>% 
+  rename(Countries= Countries...2,
+         `Countries (PAs)` = Countries...16)
+
+species_list_with_pa_names <- species_list[,1:15]
+
+species_list_with_pa_names <- species_list %>% 
+  select(Species,`Nº PAs`,`Countries (PAs)`,`PA names`) %>% 
+  mutate(Species = paste0('<em>',Species,'</em>')) %>% 
+  rename(`Nº of protected areas` = `Nº PAs`,
+         `Protected areas names` = `PA names`) 
+
+species_list_with_pa_names[species_list_with_pa_names == '<em>Iberá</em>'] <- 'Iberá'
+
+```
+
+```{r Tabla, echo=FALSE}
+x = datatable(species_list_with_pa_names,
+              escape=FALSE,
+              rownames = FALSE,
+              filter = 'top')
+
+```
+
+## "Filling the gap in distribution ranges and conservation status in *Ctenomys* (Rodentia: Ctenomyidae)."
+### *Caraballo, D. A., López, S. L., Botero-Cañola, S., and Gardner S. L.*
+
+#### **Supplementary Data SD4**. List of protected areas (PAs) that overlap _Ctenomys_ geographic distributions.
+
+<br>
+
+```{r, echo=FALSE}
+x
+```
