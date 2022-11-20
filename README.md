@@ -3,6 +3,12 @@ Caraballo, D. A., López, S. L., Botero-Cañola, S., y Gardner, S. L. Journal of
 
 This paper proposes new conservation status based on rewieved _Ctenomys_ distribution areas while checking for they overlap with protected areas and the conservation status of the species from this genus and includes an interactive map. This is made using Rstudio, tidyverse, sf, and leaflet packages.
 
+## Data
+
+Due to size restriction, the data can be downloaded from [here](https://drive.google.com/drive/folders/1a2Rsq3zyFP0Rr3twxRhqQF6Lt1axf1F1?usp=sharing)
+
+## Files
+
 -  *data_preparation.R*: manipulates distributions for area calculations and data visualization
 
 -  *figures_1_and_2.R*
