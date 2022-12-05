@@ -33,6 +33,8 @@ Due to size restriction, the data can be downloaded from [here](https://drive.go
 
 -  **figure_3.html**: html sankey code.
 
+- **Ctenomys_Land_Cover_Change.r**: Estimate large scale land cover changes within the geographic range of each Ctenomys species.
+
 Files with _SD_ prefixes generates the Supplementary Data:
 -  **Supplementary Data SD1**. Interactive map showing _Ctenomys_ geographic distribution areas (DAs), protected areas (PAs), and their intersection.
 
