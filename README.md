@@ -1,5 +1,5 @@
 # Filling the gap in distribution ranges and conservation status in _Ctenomys_ (Rodentia, Ctenomyidae).
-Caraballo, D. A., López, S. L., Botero-Cañola, S., y Gardner, S. L. Journal of Mammalogy, in _press_
+Caraballo, D. A., López, S. L., Botero-Cañola, S., Gardner, S. L. Journal of Mammalogy, in _press_
 
 This paper proposes new conservation status based on rewieved _Ctenomys_ distribution areas while checking for they overlap with protected areas and the conservation status of the species from this genus and includes an interactive map. This is made using Rstudio, tidyverse, sf, and leaflet packages.
 
